@@ -1,7 +1,7 @@
 import cors from "cors";
 import express, { Application } from "express";
 import dotenv from "dotenv";
-
+import taskRoutes from "../routes/taskRoutes";
 import errorHandling from "../middleware/errorHandler";
 import { notFoundHandler } from "../general/notFoundHandler";
 import boardRoutes from "../routes/boardRoutes";
@@ -18,6 +18,7 @@ export const createApp = (): Application => {
   app.use(cors());
 
   app.use("/api/boards", boardRoutes);
+  app.use("/api/tasks", taskRoutes)
   
 
   app.use(notFoundHandler);
