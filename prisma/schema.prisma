@@ -6,12 +6,28 @@ datasource db {
   provider = "postgresql"
 }
 
-// CHANGE_ME: add your models below
-// Tip: start with one model, then run `npx prisma migrate dev --name init`
+enum TaskStatus {
+  IN_PROGRESS
+  COMPLETED
+  WONT_DO
+}
 
-model Example {
-  id        Int      @id @default(autoincrement())
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Board {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  tasks       Task[]
+}
+
+model Task {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  status      TaskStatus 
+  boardId     String
+  board       Board    @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
