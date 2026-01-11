@@ -12,8 +12,7 @@ export const validateBody = (schema: ZodSchema) => {
         } catch (error) {
             if (error instanceof ZodError) {
                 const messages = error.issues.map(issue => issue.message);
-                
-                next(new BadRequestError(JSON.stringify(messages)));
+                next(new BadRequestError(messages.join(', ')));
             } else {
                 next(error);
             }

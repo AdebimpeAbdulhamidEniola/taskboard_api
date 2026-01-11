@@ -1,14 +1,21 @@
 import express from "express";
-import {getBoard, createBoard, updateBoard, deleteBoard} from "../controllers/boardController";
+import { getBoard, createBoard, updateBoard, deleteBoard } from "../controllers/boardController";
+import { validateBody } from "@/middleware/validateRequest";
+import { boardSchema, updateBoardSchema} from "@/schema/apiSchema";
 
+const router = express.Router({ caseSensitive: true, strict: true });
 
-import { validateBody, validateParams } from "@/middleware/validateRequest";
-import { boardSchema, updateBoardSchema, boardIdSchema } from "@/schema/apiSchema";
-const router = express.Router({caseSensitive: true, strict: true});
+// GET /api/boards/:boardId - Get a board
+router.get("/:boardId", getBoard);
 
-router.get("/:boardId", validateParams(boardIdSchema), getBoard);
-router.post("/",validateBody(boardSchema), createBoard);
-router.put("/:boardId", validateParams(boardIdSchema), validateBody(updateBoardSchema), updateBoard);
-router.delete("/:boardId", validateParams(boardIdSchema), deleteBoard);
+// POST /api/boards - Create a board
+router.post("/", validateBody(boardSchema), createBoard);
+
+// PUT /api/boards/:boardId - Update a board
+router.put("/:boardId", validateBody(updateBoardSchema), updateBoard);
+
+// DELETE /api/boards/:boardId - Delete a board
+router.delete("/:boardId", deleteBoard);
+
 
 export default router;
